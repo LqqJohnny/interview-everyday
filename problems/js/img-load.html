@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用js 预加载图片到缓存中</title>
+</head>
+<body>
+    <h2>用js 预加载图片到缓存中</h2>
+    <div id="img"></div>
+    <script>
+
+        function loadImg(src , success , error){
+            var img = new Image();
+            img.onload = function () {
+                success && success(img);
+                console.log(`${src} loaded successfully`);
+            };
+            img.onerror = function (e) {
+                error && error(e);
+                throw new Error(`${src} loader fail!`)
+            };
+            img.src = src;
+        }
+        loadImg("https://img11.360buyimg.com/ling/jfs/t1/55421/19/2712/48783/5d0852a3E716cacff/9420b2bed180db25.png",
+                function(img){
+                    document.getElementById("img").appendChild(img);
+                });
+
+    </script>
+</body>
+</html>
+
