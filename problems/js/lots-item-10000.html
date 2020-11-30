@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="parent"></div>
+
+    <script>
+        // 一次性渲染 10000 条数据 而不卡 
+        // 要点：  DocumentFragment + requestAnimationFrame
+        // 这种方法会看到 页面的内容会逐渐插入，滚动条会慢慢变长
+        let parent = document.getElementById('parent');
+        let total = 10000;
+        let once  = 20;
+        let cur_frag = 1;
+        function createLotsChildren(parent , total ,once) {
+            function inseret(){
+                let frag = document.createDocumentFragment();
+                for(let i =0 ;i<once ; i++){
+                    let p = document.createElement('p')
+                    p.innerHTML = '片段：'+ cur_frag+', 第 '+i+'个';
+                    frag.appendChild(p);
+                }
+                parent.appendChild(frag);
+                cur_frag++;
+
+                loop();
+            }
+            function loop(){
+                if(cur_frag*once <= total){
+                    window.requestAnimationFrame(inseret);
+                }
+            }
+            loop();
+        }
+
+        createLotsChildren(parent, total, once);
+    </script>
+</body>
+</html>
