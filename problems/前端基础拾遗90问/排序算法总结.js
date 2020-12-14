@@ -86,5 +86,22 @@ console.log('选择排序：', selectSort(array));
 
 
 // 4。插入排序
+// 类似扑克牌 抓牌的过程
+function insertSort(array){
+    array = array.slice();
+
+    for(let i = 1 ;i<array.length;i++){
+        let j = i-1;
+        let curr = array[i];
+        while(j>=0 && curr < array[j]){
+            array[j+1] = array[j];
+            j--;
+        }
+        array[j+1] = curr;
+    }
+    return array;
+}
+console.log('插入排序：', insertSort(array));
+
 
 
