@@ -10,10 +10,11 @@ function debounce(fn , time){
     }
 }
 
+//! 节流函数有问题 无效
 // 节流  某一段时间内 最多只能触发一次事件  ex: 监听页面滚动事件 图片懒加载， 瀑布流
 function throttle(fn , time){
     // 定义一个标志 ， 执行方法时 设置为true 定时器中重置为false
-    let flag = true;
+    let flag = false;
     return function(){
         if(flag){return}
         flag = true;

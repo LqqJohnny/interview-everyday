@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>长列表优化</title>
+    <style>
+        div{
+            padding: 0;
+        }
+        .box{
+            position: relative;
+            margin: 50px auto;
+            width:80%;
+            height: 600px;
+            border:1px solid #333;
+            overflow: auto;
+        }
+        .list{
+            position: absolute;
+            left:0;
+            top:0;
+            width: 100%;
+        }
+
+        .list-item{
+            padding:0 30px;
+            width: 100%;
+            height:  50px;
+            line-height:  50px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- 长列表优化示例 -->
+
+    <!-- 一个固定高度的box 可滚动区域 -->
+    <div class="box">
+        <!-- 撑开容器  高度是所有list-item的高度的和 -->
+        <div class="back"></div>
+        <div class="list">
+            
+        </div>
+    </div>
+
+
+    <script>
+    /** !可优化点
+        1. 上滑 ， 已经加载出来的东西 可否不需要再次计算 
+        2. list-item 高度 不统一 是随机高度
+        3. 可否增加搜索功能
+        4. 更新html 可否做到复用之前的dom元素 ， 而不是用心的html 替换旧的
+    */
+
+
+        window.onload = function(){
+            let total = 1000;
+            let dataArray = [];
+            let singleHeight = 50;
+            let onscreenNum = 12 ;  // 一屏幕能展示的个数 600 / 50
+            
+            init();
+
+            // 初始化 设置高度 位移...
+            function init() {
+                // 初始化 数组 
+                for(var i = 0 ;i<total;i++){
+                    dataArray[i] = i+1;
+                }
+                // 初始化 back 高度 撑开容器 才有滚动条出现
+                document.querySelector('.back').style.height = total * singleHeight + 'px';
+                // 初始化数据展示
+                updateBoxContent(0);
+            }
+
+            function updateBoxContent(scrollTop){
+                scrollTop = scrollTop || 0;
+                // 初始 index 
+                let start = Math.floor(scrollTop / singleHeight);
+                // 终点 index
+                let end = start + onscreenNum;
+                let array = dataArray.slice(start , end+1);
+                updateBoxHtml(array , start);
+
+            }
+            function updateBoxHtml(array , start){
+                let html = '';
+                let list = document.querySelector('.box .list');
+                array.forEach(el => {
+                   html+=`
+                        <div class="list-item">长列表优化--${el}</div>
+                   ` 
+                });
+                list.innerHTML = html;
+                let startTop = start * singleHeight;
+                list.style.webkitTransform = `translate3d(0, ${startTop}px, 0)`;
+            }
+            var thro_lis = throttle(function (e) {
+                console.log('111');
+                // 获取 上边距 然后调用 updateBoxContent 更新html和css
+                let top = document.querySelector(".box").scrollTop;
+                updateBoxContent(top);
+            }, 100);
+            console.log(thro_lis);
+            document.querySelector(".box").addEventListener("scroll" , thro_lis)
+
+            // 节流处理
+            function throttle(fn, time) {
+                // 定义一个标志 ， 执行方法时 设置为true 定时器中重置为false
+                let flag = false;
+                return function () {
+                    if (flag) { return }
+                    flag = true;
+                    setTimeout(() => {
+                        fn.apply(this, arguments);
+                        flag = false;
+                    }, time);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

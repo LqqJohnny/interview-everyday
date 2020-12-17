@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现一个 jsonp </title>
+</head>
+<body>
+    
+     <h1>实现一个 jsonp 方法</h1>
+
+
+     <script>
+
+        window.onload = function(){
+        
+            jsonp('http://127.0.0.1:444/somejson' , '' , function(res){
+                console.log(res);
+            });
+        
+        };
+        /**
+         * 
+         * url  请求的url
+         * callbackName 请求jsonp之后的回调函数 ， 后端拿这个name和返回的数据 做一个拼接，返回一个执行函数的语句
+         * success 请求成功后的回调函数
+         * fail 请求失败的回调函数
+         **/
+        function jsonp(url , callbackName , success , fail){
+            let result = null;
+            // 回调函数没有传 给传一个随机字符串作为方法名, 防止多个jsonp请求异步发出，但是callback名称一样 ， 会导致数据错乱
+
+            callbackName = callbackName || randomStr(10);
+
+            // 拼接url
+            url = url +'?callback='+ callbackName;
+            // 设置全局函数在请求成功后的js 中会调用这个函数 需要提前声明
+            window[callbackName] = function(){
+                result = arguments[0];
+            }
+            // 创建一个 script标签 
+            let script = document.createElement('script');
+            script.src = url;
+
+            // 插入标签 
+            document.body.appendChild(script);
+            // 监听 标签的加载完成 事件
+            script.onload = script.readystatechange = function(){
+                if (!script.readyState || /loaded|complete/.test(script.readyState)) {
+                    // script 加载完之后会自动执行 就会执行 上面的 callbackName 方法 result就是返回的值
+                    success(result);
+                    // 该方法已使用完 需要手动清除 回收
+                    window[callbackName] = null;
+                    // 清除这个监听事件
+                    script.onload = script.readystatechange = null;
+                } else {
+                    fail();
+                }
+            }
+        }
+
+
+        // 生成随机字符串的方法
+        function randomStr(len){
+            var x = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz";
+            var tmp = "";
+            for (var i = 0; i < len; i++) {
+                tmp += x.charAt(Math.ceil(Math.random() * 100000000) % x.length);
+            }
+            return tmp;
+        }
+
+     </script>
+</body>
+</html>
