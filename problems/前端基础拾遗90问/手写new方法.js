@@ -1,11 +1,11 @@
 
 // 简单三步 完成一个new操作
 
-function myNew(father , ...args){
-    // 创建一个新对象继承 father的原型
-    let obj = Object.create(father.prototype);
+function myNew(exc , ...args){
+    // 创建一个新对象继承 exc的原型
+    let obj = Object.create(exc.prototype);
     // 执行构造函数部分 给obj赋值 
-    let result = father.apply(obj , args);
+    let result = exc.apply(obj , args);
     // 对构造函数的返回值判断，如果返回的是对象 则new返回的值也是这对象 ， 
     // 否则就直接返回上面我们新建的对象
     return typeof (result) !== 'object' || result==null ? obj : result;

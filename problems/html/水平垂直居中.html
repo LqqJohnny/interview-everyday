@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水平垂直居中</title>
+    <style>
+        body{
+            padding: 100px 0 ;
+        }
+        .wrap{
+            margin: 50px;
+            width:1000px;
+            height: 600px;
+            background-color: #ccc;
+
+        }
+        .content{
+            width:100px;
+            height:200px;
+            background-color: rgb(157, 22, 22);
+        }
+
+        .one{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .two{
+            position: relative;
+        }
+        .two .content{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left:-50px;
+            margin-top:-100px;
+        }
+
+        .three{
+            position: relative;
+        }
+        .three .content{
+            height:100px;
+            width:200px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50% , -50%);
+        }
+
+        .four {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .four .content{
+            display: inline-block;
+        }
+
+         .five {
+            display: inline-block;
+            line-height: 600px;
+            text-align: center;
+        }
+        .five .content{
+            display: inline-block;
+            vertical-align: middle;
+            
+        }
+        .six{
+            display: grid;
+
+        }
+        .six .content{
+            align-self: center;
+            justify-self: center;
+        }
+
+
+    </style>
+</head>
+<body>
+    
+    <h1>实现水平垂直居中</h1>
+
+    <h3>方法1</h3>
+    <p>实现方式 : flex</p>
+    <div class="wrap one">
+        <div class="content "></div>
+    </div>
+
+    <h3>方法2</h3>
+    <p>实现方式 : absolute + margin负值 （需要知道content 宽高）</p>
+    <div class="wrap two">
+        <div class="content "></div>
+    </div>
+
+    <h3>方法3</h3>
+    <p>实现方式 : absolute + transform 不需要知道 宽高</p>
+    <div class="wrap three">
+        <div class="content "></div>
+    </div>
+
+
+    <h3>方法4</h3>
+    <p>实现方式 : table 行内元素居中 </p>
+    <div class="wrap four">
+        <div class="content "></div>
+    </div>
+
+    <h3>方法5</h3>
+    <p>实现方式 : 行内元素 居中 </p>
+    <div class="wrap five">
+        <div class="content "></div>
+    </div>
+
+    <h3>方法6</h3>
+    <p>实现方式 : grid</p>
+    <div class="wrap six">
+        <div class="content "></div>
+    </div>
+
+
+
+</body>
+</html>

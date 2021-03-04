@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画一个扇形</title>
+    <style>
+        .wrap{
+            width:50px;
+            height:50px;
+            overflow: hidden;
+            border-radius: 50%;
+            position: relative;
+        }
+        .square{
+            background-color: black;
+            overflow: hidden;
+            position: absolute;
+            top: 0; 
+            right: 0;
+            width: 50%;
+            height: 50%;
+            transform-origin: 0% 100%;
+            transform: rotate(30deg) skewY(-30deg);
+
+        }
+
+        .lingx{
+            height:100px;
+            width:100px;
+            background-color: black;
+            transform:  skewY(-30deg);
+
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="square"></div>
+    </div>
+    
+    <div class="lingx"></div>
+</body>
+</html>

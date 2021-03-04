@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>曲线运动</title>
+    <style>
+        .circle{
+            position: absolute; left:100px; top:100px;
+            width:20px;
+            height:20px;
+            border-radius: 50%;
+            background-color: black;
+
+            animation-name: xline , yline;
+            animation-iteration-count: infinite;
+            animation-duration: 2.5s;
+
+        }
+        @keyframes xline{
+            50% {
+                animation-timing-function: cubic-bezier(0.3, 0.27, 0.07, 1.64);
+                left: 300px;
+            }
+        }
+        @keyframes yline{
+            50% {
+                animation-timing-function: cubic-bezier(0.02, 0.01, 0.21, 1);;
+                top: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="circle"></div>
+</body>
+</html>

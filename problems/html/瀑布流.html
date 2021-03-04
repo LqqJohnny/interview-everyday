@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瀑布流</title>
+    <style>
+        html , body{
+            margin: 0;
+            padding:0;
+            height: 100%;
+            overflow:auto;
+        }
+        .wrap{
+        }
+        .wrap::after{
+            content:'';
+            display: block;
+            clear: both;
+            overflow: hidden;
+        }
+        .image-column{
+            float:left;
+            margin-right:0;
+            width:25%;
+            background-color: #eee;
+            border:1px solid #ccc;
+            box-sizing: border-box;
+
+        }
+        .image-item{
+            border-bottom:3px solid red;
+            width:100%;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="image-column"></div>
+        <div class="image-column"></div>
+        <div class="image-column"></div>
+        <div class="image-column"></div>
+
+    </div>
+
+
+    <script lang="javascript">
+        // 先写死了 4 列 
+        let columns = 4;
+        
+        
+        init();
+
+        // onscroll 
+        let wrap = document.querySelector(".wrap");
+        document.body.addEventListener('scroll' , function(e){
+            let height = document.body.clientHeight;
+            let scrollTop = document.body.scrollTop;
+            console.log(wrap.clientHeight , height , scrollTop);
+            if(wrap.clientHeight - height - scrollTop < 50){
+                init();
+            }
+        })
+
+        function init(){
+            let images = getImages();
+            images.forEach(val=>{
+                update(val);
+            })
+        }
+845
+
+        function update(src){
+            // 找出 所有列中 高度最短的一列 。 
+            let shortestEle = findShortestColumn();
+            let _image = document.createElement("img");
+            _image.className="image-item";
+            _image.src=src;
+            shortestEle.appendChild(_image);
+        }
+
+        function findShortestColumn(){
+            let columns = document.querySelectorAll(".image-column");
+            let shortestIndex = 0;
+            let shortestHeight = Infinity;
+            for(let i = 0 ;i< columns.length;i++){
+                let height = columns[i].childNodes.length;
+                if( height < shortestHeight){
+                    shortestIndex = i;
+                    shortestHeight = height;
+                }
+            }
+            return columns[shortestIndex];
+        }
+
+
+
+        function getImages(){
+            // 一些图片 资源 地址 
+            let _images = [
+                'http://browser9.qhimg.com/bdm/1024_768_85/t010824ab8b5cdfa138.jpg',
+                'http://browser9.qhimg.com/bdm/1024_768_85/t01753453b660de14e9.jpg',
+                'http://browser9.qhimg.com/bdm/1280_1024_85/t01bbd94b90e850d1d3.jpg',
+                'http://pic.5tu.cn/uploads/allimg/201003/010P00001061E44115-1.jpg',
+                'http://pic.5tu.cn/uploads/allimg/202103/pic_5tu_thumb_5886804_3e1cee126c4819be2ab9309bca892e46.jpg',
+                "http://browser9.qhimg.com/bdm/1600_900_85/t019fd908f724f51900.jpg",
+                'http://browser9.qhimg.com/bdm/1440_900_85/t0179b947962a684673.jpg',
+                'http://browser9.qhimg.com/bdm/1366_768_85/t01cd97ec806b712059.jpg',
+                'http://pic.5tu.cn/uploads/allimg/201409/010P0000240264645250-1.jpg',
+                'http://pic.5tu.cn/uploads/allimg/201911/pic_5tu_thumb_201911132227491649.jpg',
+            ]
+            return _images;
+        }
+
+    </script>
+</body>
+</html>
